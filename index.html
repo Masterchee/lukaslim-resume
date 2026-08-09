@@ -120,7 +120,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     const viewCountElement = document.getElementById('view-count');
 
-    fetch('[API_ENDPOINT_URL]', {
+    fetch('https://57xd6ainse4to36inwwb2pfqou0ofgjo.lambda-url.ap-southeast-1.on.aws/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -133,6 +133,7 @@
         return response.json();
       })
       .then(data => {
+        // Unpack nested body string if returned by standard Lambda proxy format
         let payload = data;
         if (typeof data.body === 'string') {
           payload = JSON.parse(data.body);
@@ -167,8 +168,8 @@
 
   <section class="hero">
     <div class="hero-content">
-      <img src="placeholder-profile.jpg" alt="Profile Photo" class="profile-photo">
-      <h1>Lim Chee Hao <span>Lukas</span></h1>
+      <img src="profile.jpg" alt="Lim Chee Hao, Lukas" class="profile-photo">
+      <h1>Lim Chee Hao, <span>Lukas</span></h1>
       <p class="subtitle">Aspiring Solutions Architect</p>
       <p class="location">🇸🇬 Singapore</p>
       <div class="badge-row">
@@ -177,7 +178,7 @@
         <a href="https://www.credly.com/badges/01c8742f-f120-400b-953f-126e5bb578c4" target="_blank" class="badge">Google IT Support</a>
         <a href="https://www.scs.org.sg/membership/verify?id=e8adde60-8bab-4b3f-b56e-1293def0ecd7" target="_blank" class="badge">MSCS</a>
       </div>
-      <a href="https://www.linkedin.com/in/masterchee" class="cta-btn" target="_blank">Connect on LinkedIn</a>
+      <a href="https://www.linkedin.com/in/masterchee/" class="cta-btn" target="_blank">Connect on LinkedIn</a>
     </div>
   </section>
 
@@ -185,10 +186,10 @@
     <h2>About Me</h2>
     <div class="about-text">
       <p>I am a Datacenter Technician — I insert cables to make stuff talk to each other, and I conduct surgeries on stuff to make them healthy. What stuff? Computer stuff.</p>
-      <p>I began my career with a solid foundation in mechanical electronics, honed through my work in the defense sector, gaining invaluable experience in troubleshooting computer systems supporting operational capabilities. My passion for IT led me to earn certifications with Google IT Support, AWS CCP, and EPI CDCP with a keen interest in Datacenter Operations, Data Analytics, Cloud Computing, Web Development and AI.</p>
-      <p>In my current role, I support as a technician and provision the needs of datacenters. I maintain and build hardware infrastructure in the cloud. As a team player, I drive and engage in projects to make my workplaces better. As an engineer, I develop purposeful data visuals dedicated to the team.</p>
+      <p>I began my career with a solid foundation in mechanical electronics, honed through my work with the Republic of Singapore Air Force, gaining invaluable experience in troubleshooting computer systems supporting military capabilities. My passion for IT led me to earn certifications with Google IT Support, AWS CCP, and EPI CDCP with a keen interest in Datacenter Operations, Data Analytics, Cloud Computing, Web Development and AI.</p>
+      <p>At AWS, I support as a technician and provision the needs of the datacenters. I maintain and build hardware infrastructure in the cloud. As a team player, I drive and engage in projects to make my workplaces better. As an engineer, I develop purposeful data visuals dedicated to the team.</p>
       <p>My interest in cloud services drives my enthusiasm to use data integration and data automation tools. I innovate on behalf of my customers with the knowledge I have.</p>
-      <p>As a professional IT society member, I am dedicated to staying at the forefront of technological advancements while contributing to a safer, and more productive working environment.</p>
+      <p>As a member of Singapore Computer Society, I am dedicated to stay at the forefront of technological advancements while contributing to a safer, and more productive working environment.</p>
     </div>
   </section>
 
@@ -196,9 +197,9 @@
     <h2>Experience</h2>
     <div class="timeline">
       <div class="timeline-item">
-        <h3>Data Center Operations Technician Senior</h3>
-        <div class="company">[Cloud Service Provider]</div>
-        <div class="date">[Start Date] – Present · [Location]</div>
+        <h3>Data Center Operations Technician 3</h3>
+        <div class="company">Amazon Web Services (AWS)</div>
+        <div class="date">Dec 2024 – Present · Singapore</div>
         <ul>
           <li>Train New Hires on Data Center Operations role</li>
           <li>Train employees across APAC on Amazon Quicksight and SQL</li>
@@ -214,9 +215,9 @@
         </ul>
       </div>
       <div class="timeline-item">
-        <h3>Data Center Operations Technician</h3>
-        <div class="company">[Cloud Service Provider]</div>
-        <div class="date">[Start Date] – [End Date] · [Duration] · [Location]</div>
+        <h3>Data Center Operations Technician 2</h3>
+        <div class="company">Amazon Web Services (AWS)</div>
+        <div class="date">Jun 2022 – Dec 2024 · 2 yrs 7 mos · Singapore</div>
         <ul>
           <li>Rack side cable patching to connect servers to cloud infrastructure</li>
           <li>Troubleshoot, perform diagnostics, replace server parts</li>
@@ -231,18 +232,18 @@
       </div>
       <div class="timeline-item">
         <h3>Datacenter Trainee</h3>
-        <div class="company">[Cloud Service Provider]</div>
-        <div class="date">[Start Date] – [End Date] · [Duration]</div>
+        <div class="company">Amazon Web Services (AWS)</div>
+        <div class="date">Mar 2022 – Jun 2022 · 4 mos</div>
         <ul>
           <li>Learning about operations in a datacenter</li>
           <li>Working in a datacenter environment</li>
-          <li>Aligning to core organizational Leadership Principles</li>
+          <li>Aligning to Amazon Leadership Principles</li>
         </ul>
       </div>
       <div class="timeline-item">
         <h3>Computer Systems Engineer</h3>
-        <div class="company">[Defense Organization]</div>
-        <div class="date">[Start Date] – [End Date] · [Duration] · [Location]</div>
+        <div class="company">Republic of Singapore Air Force</div>
+        <div class="date">Jan 2016 – Feb 2022 · 6 yrs 2 mos · Singapore</div>
         <ul>
           <li>Maintenance Forecasting and Events Planning</li>
           <li>Shift work, On site and On Call support</li>
@@ -316,35 +317,35 @@
         <div class="cert-icon">🩺</div>
         <div>
           <h3>OFA - First Aid CPR AED</h3>
-          <p>[Provider] · [Date]</p>
+          <p>Academiclinic · Apr 2026</p>
         </div>
       </div>
       <div class="cert-card">
         <div class="cert-icon">🏢</div>
         <div>
-          <h3><a href="[CREDENTIAL_URL]" target="_blank">Certified Data Center Professional (CDCP)</a></h3>
-          <p>EPI Academy · [Date]</p>
+          <h3><a href="https://mylogin.exin.nl/polarserver.asp?Script=GetLinkedInPost&CandidateCertificateGUID=AED2F92E-7872-4DAA-8367-9FD9439B39F0&ts=465445015" target="_blank">Certified Data Center Professional (CDCP)</a></h3>
+          <p>EPI Academy · Mar 2025</p>
         </div>
       </div>
       <div class="cert-card">
         <div class="cert-icon">☁️</div>
         <div>
-          <h3><a href="[CREDENTIAL_URL]" target="_blank">AWS Certified Cloud Practitioner</a></h3>
-          <p>Amazon Web Services · [Date]</p>
+          <h3><a href="https://www.credly.com/badges/98b79a70-3a7a-4e3e-aa2d-6c386a050036/public_url" target="_blank">AWS Certified Cloud Practitioner</a></h3>
+          <p>Amazon Web Services · Oct 2024</p>
         </div>
       </div>
       <div class="cert-card">
         <div class="cert-icon">📊</div>
         <div>
           <h3>Google Data Analyst Course</h3>
-          <p>Coursera · [Date]</p>
+          <p>Coursera · Jun 2024</p>
         </div>
       </div>
       <div class="cert-card">
         <div class="cert-icon">💻</div>
         <div>
-          <h3><a href="[CREDENTIAL_URL]" target="_blank">Google IT Support Professional</a></h3>
-          <p>Google via Coursera · [Date]</p>
+          <h3><a href="https://www.credly.com/badges/01c8742f-f120-400b-953f-126e5bb578c4" target="_blank">Google IT Support Professional</a></h3>
+          <p>Google via Coursera · Feb 2022</p>
         </div>
       </div>
     </div>
@@ -401,22 +402,22 @@
     <div class="edu-item">
       <h3>Certified Data Center Professional (CDCP)</h3>
       <div class="school">EPI Academy</div>
-      <div class="date">[Date]</div>
+      <div class="date">Mar 2025</div>
     </div>
     <div class="edu-item">
       <h3>Google Data Analyst Course – Data Analytics</h3>
       <div class="school">Coursera</div>
-      <div class="date">[Date Range]</div>
+      <div class="date">Jan 2024 – Jun 2024</div>
     </div>
     <div class="edu-item">
       <h3>Google IT Support Professional Certificate</h3>
       <div class="school">Coursera</div>
-      <div class="date">[Date Range]</div>
+      <div class="date">Dec 2021 – Feb 2022</div>
     </div>
     <div class="edu-item">
       <h3>Diploma in Mechatronics</h3>
-      <div class="school">[Institution Name]</div>
-      <div class="date">[Date Range]</div>
+      <div class="school">Temasek Polytechnic</div>
+      <div class="date">Mar 2012 – Mar 2015</div>
     </div>
   </section>
 
@@ -440,11 +441,11 @@
 
   <footer>
     <div class="social-links">
-      <a href="[LINKEDIN_URL]" target="_blank">LinkedIn</a>
-      <a href="[CREDLY_URL]" target="_blank">Credly</a>
-      <a href="[GITHUB_URL]" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/masterchee/" target="_blank">LinkedIn</a>
+      <a href="https://www.credly.com/users/chee-hao-lim" target="_blank">Credly</a>
+      <a href="https://github.com/Masterchee" target="_blank">GitHub</a>
     </div>
-    <p>© 2026 [Your Name]. Built with passion for technology.</p>
+    <p>© 2026 Lim Chee Hao, Lukas. Built with passion for technology.</p>
   </footer>
 
   <script>
