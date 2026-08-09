@@ -22,7 +22,8 @@ This project serves as a lightweight, framework-free web portfolio tailored for 
 
 ## 🏗️ Architecture
 
-┌─────────────────────────┐
+:
+                       ┌─────────────────────────┐
                        │  GitHub / CodeCommit    │
                        └────────────┬────────────┘
                                     │ (Auto-Build / CI-CD)
