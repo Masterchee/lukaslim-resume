@@ -1,0 +1,25 @@
+🚀 Building a 3-Tier Serverless View Counter with S3, Lambda & DynamoDB
+
+I recently built and deployed a custom real-time view counter for my personal website on AWS. While static sites don't need traditional servers, this project was a great exercise in implementing a 3-Tier Serverless Architecture.
+
+Here is how the architecture is separated across the three tiers:
+
+🛠️ The 3-Tier Stack:
+
+Presentation Tier (Frontend): Static HTML/CSS/JS hosted on Amazon S3 serving the user interface and client-side fetch() scripts.
+
+Logic Tier (Backend): An AWS Lambda Function URL (configured with GET and POST methods) handling business logic, preflight CORS, and HTTP responses.
+
+Data Tier (Database): An Amazon DynamoDB table persisting the live state and view counts.
+
+💡 Key Takeaways & Best Practices Learned:
+
+Serverless 3-Tier Alignment: You don't need EC2 instances or dedicated VMs to follow standard 3-tier principles—separating presentation, execution, and state managed by AWS keeps the system modular and highly available.
+
+Handling CORS Gracefully: Preflight OPTIONS requests are managed automatically by Lambda Function URL CORS settings once your code returns matching response headers.
+
+Zero Overhead & High Scalability: Combining S3, pay-per-use Lambda, and DynamoDB means running costs stay near zero while seamlessly handling spikes in site traffic.
+
+Check out the site live at lukaslim.com!
+
+#AWS #Serverless #3TierArchitecture #Lambda #DynamoDB #AmazonS3 #CloudComputing #DevOps #WebDevelopment
