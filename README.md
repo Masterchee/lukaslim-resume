@@ -43,14 +43,14 @@ This project serves as a lightweight, framework-free web portfolio tailored for 
     │       Amazon S3 Bucket       │        │   AWS Lambda (Function URL)  │
     │  (Media & Image Storage)     │        │     (Python Runtime)         │
     └──────────────────────────────┘        └───────────────┬──────────────┘
-                                                        │
-                                                        │ Atomic Update
-                                                        ▼
-                                        ┌──────────────────────────────┐
-                                        │          DATA TIER           │
-                                        │       Amazon DynamoDB        │
-                                        │    (Counter Persistence)     │
-                                        └──────────────────────────────┘
+                                                            │
+                                                            │ Atomic Update
+                                                            ▼
+                                            ┌──────────────────────────────┐
+                                            │          DATA TIER           │
+                                            │       Amazon DynamoDB        │
+                                            │    (Counter Persistence)     │
+                                            └──────────────────────────────┘
 
 
 ---
