@@ -1,0 +1,75 @@
+Overview
+Document Title: Lim Chee Hao, Lukas | Datacenter Technician, Aspiring Solutions Architect
+
+Purpose: Personal portfolio and curriculum vitae webpage.
+
+Target Audience/Owner: Lukas Lim Chee Hao (Data Center Technician based in Singapore).
+
+Tech Stack: Plain HTML5, embedded CSS3, and vanilla JavaScript (no external framework dependencies).
+
+Layout & Architecture
+┌─────────────────────────────────────────────────────────┐
+│              Fixed View Counter Banner                  │
+├─────────────────────────────────────────────────────────┤
+│                  Fixed Navigation Bar                   │
+├─────────────────────────────────────────────────────────┤
+│  Hero Section (Profile Photo, Name, Badges, CTA)       │
+├─────────────────────────────────────────────────────────┤
+│  Main Content Sections                                  │
+│  ├── About Me                                           │
+│  ├── Experience (Timeline)                              │
+│  ├── Skills (Category Grid)                             │
+│  ├── Certifications (Badge Grid)                        │
+│  ├── Projects (Card Grid)                               │
+│  ├── Education                                          │
+│  └── Languages                                          │
+├─────────────────────────────────────────────────────────┤
+│  Footer (Social Links & Copyright)                      │
+└─────────────────────────────────────────────────────────┘
+Page Components & Content Summary
+1. Fixed Header Components
+View Counter Banner: Positioned at the top of the viewport (top: 0), displaying real-time page views fetched via an asynchronous API call.
+
+Navigation Bar: Positioned right below the view counter (top: 32px) with blur backdrop effects. Contains jump-links to all main sections (#about, #experience, #skills, #certifications, #projects, #education, #languages).
+
+2. Main Content Sections
+Hero Section: Displays profile photo (profile.jpg), primary job title, location, quick certification badges (AWS CCP, CDCP, Google IT Support, MSCS), and a LinkedIn CTA button.
+
+About Me: Brief professional summary covering background in mechanical electronics (RSAF), progression into IT, and current focus at AWS.
+
+Experience: Chronological timeline detailing roles:
+
+AWS: Data Center Operations Technician 3 (Dec 2024 – Present), Data Center Operations Technician 2 (Jun 2022 – Dec 2024), Datacenter Trainee (Mar 2022 – Jun 2022).
+
+RSAF: Computer Systems Engineer (Jan 2016 – Feb 2022).
+
+Skills: Grid layout grouping competencies into 4 categories:
+
+Infrastructure: Data Centers, Server Hardware, Network Switches, Fiber Optics, Cable Patching, Linux, Windows.
+
+Cloud & Data: AWS (EC2, S3, Lambda, RDS), Amazon QuickSight, Amazon Bedrock, SQL.
+
+Development: HTML, CSS, JavaScript, API Integration, Supabase, GitHub, Web Development.
+
+Analytics & Tools: Data Analytics/Visualization, Dashboards, ETL, Troubleshooting, CLI, AI Tools.
+
+Certifications: External links to verified credentials (OFA First Aid, CDCP, AWS CCP, Google Data Analyst, Google IT Support).
+
+Projects: Card layout highlighting 8 notable technical & operational projects (e.g., Web App with Global Map, AI Search Hackathon, APAC QuickSight Dashboards, LSE Collaboration Tool).
+
+Education & Languages: Highlights vocational diplomas/certifications and proficiency in English, Chinese, and Vietnamese.
+
+Dynamic Functionality (JavaScript)
+Live View Counter API Integration:
+
+Fires a POST request on DOMContentLoaded to an AWS Lambda Function URL ([https://57xd6ainse4to36inwwb2pfqou0ofgjo.lambda-url.ap-southeast-1.on.aws/](https://57xd6ainse4to36inwwb2pfqou0ofgjo.lambda-url.ap-southeast-1.on.aws/)).
+
+Parses the response payload for view_count and updates the DOM dynamically using local number formatting (toLocaleString()). Displays 'N/A' on failure.
+
+Smooth Scrolling:
+
+Intercepts navigation click events and applies smooth scroll behaviors (element.scrollIntoView({ behavior: 'smooth' })).
+
+Scroll Reveal Animations:
+
+Utilizes an IntersectionObserver to trigger fade-in and slide-up animations (translateY) as cards and timeline elements scroll into view.
