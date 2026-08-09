@@ -21,8 +21,6 @@ This project serves as a lightweight, framework-free web portfolio tailored for 
 ---
 
 ## 🏗️ Architecture
-
-:
                        ┌─────────────────────────┐
                        │  GitHub / CodeCommit    │
                        └────────────┬────────────┘
@@ -33,18 +31,18 @@ This project serves as a lightweight, framework-free web portfolio tailored for 
                        │ (Hosting & Edge Delivery│
                        └────────────┬────────────┘
                                     │ Serves Site
-                                    ▼
-┌───────────────────────────────────────────────────────────────────────┐
-│                       PRESENTATION TIER                               │
-│                         User Browser                                  │
-└───────────────┬───────────────────────────────────────┬───────────────┘
-                │ Fetches Images / Assets               │ POST (View Count)
-                ▼                                       ▼
-┌──────────────────────────────┐        ┌──────────────────────────────┐
-│          DATA TIER           │        │          LOGIC TIER          │
-│       Amazon S3 Bucket       │        │   AWS Lambda (Function URL)  │
-│  (Media & Image Storage)     │        │     (Python Runtime)         │
-└──────────────────────────────┘        └───────────────┬──────────────┘
+                                    ▼  
+    ┌───────────────────────────────────────────────────────────────────────┐
+    │                       PRESENTATION TIER                               │
+    │                         User Browser                                  │
+    └───────────────┬───────────────────────────────────────┬───────────────┘
+                    │ Fetches Images / Assets               │ POST (View Count)
+                    ▼                                       ▼
+    ┌──────────────────────────────┐        ┌──────────────────────────────┐
+    │          DATA TIER           │        │          LOGIC TIER          │
+    │       Amazon S3 Bucket       │        │   AWS Lambda (Function URL)  │
+    │  (Media & Image Storage)     │        │     (Python Runtime)         │
+    └──────────────────────────────┘        └───────────────┬──────────────┘
                                                         │
                                                         │ Atomic Update
                                                         ▼
