@@ -92,6 +92,20 @@
     .project-card .tech-stack {display: flex;flex-wrap: wrap;gap: 0.4rem;}
     .project-card .tech-stack span {background: rgba(0, 212, 170, 0.1);padding: 0.2rem 0.6rem;border-radius: 3px;font-size: 0.75rem;color: var(--accent);}
     
+    /* --- Auth Demo Styles --- */
+    .auth-container { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 2.5rem; max-width: 500px; margin: 0 auto; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+    .auth-container input { width: 100%; padding: 0.9rem; margin-bottom: 1rem; border: 1px solid var(--card-border); background: var(--primary); color: var(--text); border-radius: 4px; outline: none; transition: border-color 0.3s; }
+    .auth-container input:focus { border-color: var(--accent); }
+    .auth-buttons { display: flex; gap: 1rem; justify-content: center; margin-top: 0.5rem; }
+    .auth-btn { flex: 1; padding: 0.8rem; background: transparent; border: 1px solid var(--accent); color: var(--accent); border-radius: 4px; cursor: pointer; transition: all 0.3s; font-weight: 600; }
+    .auth-btn:hover { background: var(--accent); color: var(--primary); }
+    .auth-btn.primary { background: var(--accent); color: var(--primary); }
+    .auth-btn.primary:hover { background: transparent; color: var(--accent); }
+    #user-list-container { text-align: left; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--card-border); }
+    #user-list { list-style: none; padding: 0; margin-top: 1rem; max-height: 200px; overflow-y: auto; }
+    #user-list li { padding: 0.75rem 1rem; background: rgba(0, 212, 170, 0.05); margin-bottom: 0.5rem; border-radius: 4px; border-left: 3px solid var(--accent); color: var(--text); display: flex; align-items: center; }
+    #user-list li::before { content: '👤'; margin-right: 10px; font-size: 0.9rem; }
+
     /* Footer */
     footer {text-align: center;padding: 3rem 2rem;border-top: 1px solid var(--card-border);}
     footer .social-links {display: flex;justify-content: center;gap: 1.5rem;margin-bottom: 1.5rem;}
@@ -160,9 +174,9 @@
       <li><a href="#experience">Experience</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#certifications">Certifications</a></li>
+      <li><a href="#demo">Live Demo</a></li>
       <li><a href="#projects">Projects</a></li>
       <li><a href="#education">Education</a></li>
-      <li><a href="#languages">Languages</a></li>
     </ul>
   </nav>
 
@@ -351,6 +365,31 @@
     </div>
   </section>
 
+  <!-- NEW AUTH DEMO SECTION -->
+  <section id="demo">
+    <h2>Serverless Auth Demo</h2>
+    <div class="auth-container">
+      <form id="auth-form">
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">
+          Powered by AWS API Gateway, Lambda, and DynamoDB.
+        </p>
+        <input type="text" id="username" placeholder="Username" required />
+        <input type="password" id="password" placeholder="Password" required />
+        <div class="auth-buttons">
+          <button type="button" class="auth-btn" onclick="registerUser()">Register</button>
+          <button type="button" class="auth-btn primary" onclick="loginUser()">Login</button>
+        </div>
+      </form>
+
+      <div id="user-list-container" style="display: none;">
+        <h3 style="color: var(--accent); margin-bottom: 0.5rem; font-size: 1.1rem;">Registered Users</h3>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Successfully authenticated. Here is the database scan result:</p>
+        <ul id="user-list"></ul>
+        <button type="button" class="auth-btn" onclick="logoutUser()" style="margin-top: 1.5rem; width: 100%;">Logout / Reset</button>
+      </div>
+    </div>
+  </section>
+
   <section id="projects">
     <h2>Projects</h2>
     <div class="projects-grid">
@@ -486,6 +525,88 @@
       el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
       observer.observe(el);
     });
+
+    // --- 3. SERVERLESS AUTH DEMO LOGIC ---
+    
+    // REPLACE THIS URL WITH YOUR NEW API GATEWAY INVOKE URL
+    const AUTH_API_URL = "https://g43wvkz1y7.execute-api.ap-southeast-1.amazonaws.com"; 
+
+    async function registerUser() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      if(!username || !password) {
+        alert("Please enter a username and password.");
+        return;
+      }
+
+      try {
+        const response = await fetch(`${AUTH_API_URL}/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          alert("Registration successful! You can now log in.");
+        } else {
+          alert("Error: " + (data.error || "Failed to register"));
+        }
+      } catch (error) {
+        console.error("Registration Error:", error);
+        alert("Network error. Did you replace AUTH_API_URL and configure CORS?");
+      }
+    }
+
+    async function loginUser() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      if(!username || !password) {
+        alert("Please enter a username and password.");
+        return;
+      }
+
+      try {
+        const response = await fetch(`${AUTH_API_URL}/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          displayUsers(data.registered_users);
+        } else {
+          alert("Error: " + (data.error || "Invalid credentials"));
+        }
+      } catch (error) {
+        console.error("Login Error:", error);
+        alert("Network error. Did you replace AUTH_API_URL and configure CORS?");
+      }
+    }
+
+    function displayUsers(usersArray) {
+      document.getElementById('auth-form').style.display = 'none';
+      const container = document.getElementById('user-list-container');
+      const listElement = document.getElementById('user-list');
+      
+      container.style.display = 'block';
+      listElement.innerHTML = ''; 
+      
+      usersArray.forEach(user => {
+        const li = document.createElement('li');
+        li.textContent = user;
+        listElement.appendChild(li);
+      });
+    }
+
+    function logoutUser() {
+      document.getElementById('auth-form').reset();
+      document.getElementById('auth-form').style.display = 'block';
+      document.getElementById('user-list-container').style.display = 'none';
+    }
   </script>
 </body>
 </html>
