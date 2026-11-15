@@ -28,7 +28,7 @@
 <body>
   <header>
     <a href="/">Home</a>
-    <a href="/learn/learn.html">Learn</a>
+    <a href="/learn/">Learn</a>
   </header>
   <main id="content"></main>
 
@@ -40,7 +40,8 @@
       { slug: "networking-osi",    title: "Networking & the OSI Model", desc: "Bottom-up troubleshooting, layer by layer." },
       { slug: "operating-systems", title: "Operating Systems",          desc: "Processes, memory, file systems, and the CLI." },
       { slug: "cloud-aws",         title: "Cloud (AWS)",                desc: "How lukaslim.com itself is built and delivered." },
-      { slug: "databases",         title: "Databases",                  desc: "SQL vs. NoSQL, indexing, and connection flows." }
+      { slug: "databases",         title: "Databases",                  desc: "SQL vs. NoSQL, indexing, and connection flows." },
+      { slug: "windows-administration", title: "Windows Administration", desc: "Users, groups, Remote Desktop, operator vs. administrator rights, and Power Users." }
     ];
 
     const el = document.getElementById("content");
@@ -56,9 +57,9 @@
       // Allow only lowercase letters, digits, hyphens and slashes; block path traversal.
       if (!/^[a-z0-9-]+(\/[a-z0-9-]+)*$/.test(p)) { el.textContent = "Invalid page."; return; }
       const res = await fetch(`${p}/index.md`);
-      if (!res.ok) { el.innerHTML = "<h1>Not found</h1><p><a href='/learn/learn.html'>Back to Learn</a></p>"; return; }
+      if (!res.ok) { el.innerHTML = "<h1>Not found</h1><p><a href='/learn/'>Back to Learn</a></p>"; return; }
       const md = await res.text();
-      el.innerHTML = DOMPurify.sanitize(marked.parse(md)) + "<p><a href='/learn/learn.html'>&larr; All tracks</a></p>";
+      el.innerHTML = DOMPurify.sanitize(marked.parse(md)) + "<p><a href='/learn/'>&larr; All tracks</a></p>";
       const h1 = el.querySelector("h1");
       if (h1) document.title = h1.textContent + " | Lukas Lim";
     }
