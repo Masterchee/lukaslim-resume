@@ -3,618 +3,67 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lim Chee Hao, Lukas | Aspiring Solutions Architect</title>
+  <title>Learn | Lukas Lim</title>
   <style>
-    * {margin: 0;padding: 0;box-sizing: border-box;}
-    :root {--primary: #0f1b2d;--accent: #00d4aa;--accent-dark: #00b894;--text: #e0e0e0;--text-muted: #a0a0a0;--card-bg: #1a2744;--card-border: #2a3f5f;}
-    body {font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background: var(--primary);color: var(--text);line-height: 1.6;}
-    a {color: var(--accent);text-decoration: none;transition: color 0.3s;}
-    a:hover {color: var(--accent-dark);}
-    
-    /* View Counter */
-    .view-counter {position: fixed;top: 0;width: 100%;background: rgba(0, 212, 170, 0.08);border-bottom: 1px solid var(--accent);padding: 0.4rem 1rem;text-align: center;font-size: 0.8rem;color: var(--accent);z-index: 1001;letter-spacing: 0.5px;}
-    
-    /* Navigation */
-    nav {position: fixed;top: 32px;width: 100%;background: rgba(15, 27, 45, 0.95);backdrop-filter: blur(10px);padding: 1rem 2rem;z-index: 1000;border-bottom: 1px solid var(--card-border);}
-    nav ul {display: flex;justify-content: center;list-style: none;gap: 2rem;flex-wrap: wrap;}
-    nav ul li a {color: var(--text-muted);font-size: 0.9rem;text-transform: uppercase;letter-spacing: 1px;transition: color 0.3s;}
-    nav ul li a:hover {color: var(--accent);}
-    
-    /* Hero Section */
-    .hero {min-height: 100vh;display: flex;align-items: center;justify-content: center;text-align: center;padding: 6rem 2rem 4rem;background: linear-gradient(135deg, #0f1b2d 0%, #1a2744 50%, #0f1b2d 100%);position: relative;overflow: hidden;}
-    .hero::before {content: '';position: absolute;top: -50%;left: -50%;width: 200%;height: 200%;background: radial-gradient(circle at 30% 50%, rgba(0, 212, 170, 0.05) 0%, transparent 50%),radial-gradient(circle at 70% 80%, rgba(0, 212, 170, 0.03) 0%, transparent 40%);animation: pulse 8s ease-in-out infinite alternate;}
-    @keyframes pulse {0% { transform: scale(1); opacity: 0.5; }100% { transform: scale(1.1); opacity: 1; }}
-    .hero-content {position: relative;z-index: 1;}
-    .hero h1 {font-size: 3rem;margin-bottom: 0.5rem;color: #fff;}
-    .hero h1 span {color: var(--accent);}
-    .hero .subtitle {font-size: 1.3rem;color: var(--text-muted);margin-bottom: 1rem;}
-    .hero .location {font-size: 1rem;color: var(--text-muted);margin-bottom: 2rem;}
-    .profile-photo {width: 150px;height: 150px;border-radius: 50%;object-fit: cover;border: 3px solid var(--accent);margin-bottom: 1.5rem;box-shadow: 0 0 20px rgba(0, 212, 170, 0.2);}
-    .badge-row {display: flex;gap: 0.75rem;justify-content: center;flex-wrap: wrap;margin-bottom: 2rem;}
-    .badge {display: inline-block;background: rgba(0, 212, 170, 0.1);border: 1px solid var(--accent);padding: 0.4rem 1rem;border-radius: 20px;font-size: 0.85rem;color: var(--accent);transition: background 0.3s, transform 0.2s;}
-    .badge:hover {background: rgba(0, 212, 170, 0.25);transform: translateY(-2px);}
-    .cta-btn {display: inline-block;padding: 0.8rem 2rem;background: var(--accent);color: var(--primary);font-weight: 600;border-radius: 5px;transition: transform 0.3s, box-shadow 0.3s;}
-    .cta-btn:hover {transform: translateY(-2px);box-shadow: 0 5px 20px rgba(0, 212, 170, 0.3);color: var(--primary);}
-    
-    /* Sections */
-    section {max-width: 900px;margin: 0 auto;padding: 5rem 2rem;}
-    section h2 {font-size: 2rem;margin-bottom: 2rem;color: #fff;position: relative;display: inline-block;}
-    section h2::after {content: '';position: absolute;bottom: -8px;left: 0;width: 60px;height: 3px;background: var(--accent);border-radius: 2px;}
-    
-    /* About */
-    .about-text {font-size: 1.05rem;color: var(--text-muted);max-width: 750px;}
-    .about-text p {margin-bottom: 1rem;}
-    
-    /* Experience */
-    .timeline {position: relative;padding-left: 2rem;}
-    .timeline::before {content: '';position: absolute;left: 0;top: 0;bottom: 0;width: 2px;background: var(--card-border);}
-    .timeline-item {position: relative;margin-bottom: 2.5rem;padding: 1.5rem;background: var(--card-bg);border: 1px solid var(--card-border);border-radius: 8px;transition: transform 0.3s, border-color 0.3s;}
-    .timeline-item:hover {transform: translateX(5px);border-color: var(--accent);}
-    .timeline-item::before {content: '';position: absolute;left: -2.55rem;top: 1.8rem;width: 12px;height: 12px;background: var(--accent);border-radius: 50%;border: 2px solid var(--primary);}
-    .timeline-item h3 {color: #fff;font-size: 1.15rem;margin-bottom: 0.25rem;}
-    .timeline-item .company {color: var(--accent);font-size: 0.95rem;margin-bottom: 0.25rem;}
-    .timeline-item .date {color: var(--text-muted);font-size: 0.85rem;margin-bottom: 0.75rem;}
-    .timeline-item ul {list-style: none;padding: 0;}
-    .timeline-item ul li {color: var(--text-muted);font-size: 0.9rem;padding: 0.25rem 0;padding-left: 1.2rem;position: relative;}
-    .timeline-item ul li::before {content: '▹';position: absolute;left: 0;color: var(--accent);}
-    
-    /* Skills */
-    .skills-grid {display: grid;grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));gap: 1.5rem;}
-    .skill-category {background: var(--card-bg);border: 1px solid var(--card-border);border-radius: 8px;padding: 1.5rem;transition: border-color 0.3s;}
-    .skill-category:hover {border-color: var(--accent);}
-    .skill-category h3 {color: var(--accent);font-size: 1rem;margin-bottom: 1rem;text-transform: uppercase;letter-spacing: 1px;}
-    .skill-tags {display: flex;flex-wrap: wrap;gap: 0.5rem;}
-    .skill-tag {background: rgba(0, 212, 170, 0.08);border: 1px solid var(--card-border);padding: 0.3rem 0.75rem;border-radius: 4px;font-size: 0.8rem;color: var(--text);}
-    
-    /* Certifications */
-    .cert-grid {display: grid;grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));gap: 1.25rem;}
-    .cert-card {background: var(--card-bg);border: 1px solid var(--card-border);border-radius: 8px;padding: 1.25rem;display: flex;align-items: flex-start;gap: 1rem;transition: border-color 0.3s, transform 0.3s;}
-    .cert-card:hover {border-color: var(--accent);transform: translateY(-2px);}
-    .cert-card a {text-decoration: none;}
-    .cert-card a h3:hover {color: var(--accent);}
-    .cert-icon {font-size: 1.8rem;min-width: 40px;text-align: center;}
-    .cert-card h3 {color: #fff;font-size: 0.95rem;margin-bottom: 0.25rem;transition: color 0.3s;}
-    .cert-card p {color: var(--text-muted);font-size: 0.8rem;}
-    
-    /* Education */
-    .edu-item {background: var(--card-bg);border: 1px solid var(--card-border);border-radius: 8px;padding: 1.5rem;margin-bottom: 1rem;transition: border-color 0.3s;}
-    .edu-item:hover {border-color: var(--accent);}
-    .edu-item h3 {color: #fff;font-size: 1.05rem;margin-bottom: 0.25rem;}
-    .edu-item .school {color: var(--accent);font-size: 0.9rem;}
-    .edu-item .date {color: var(--text-muted);font-size: 0.85rem;}
-    
-    /* Projects */
-    .projects-grid {display: grid;grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));gap: 1.5rem;}
-    .project-card {background: var(--card-bg);border: 1px solid var(--card-border);border-radius: 8px;padding: 1.5rem;transition: transform 0.3s, border-color 0.3s;}
-    .project-card:hover {transform: translateY(-3px);border-color: var(--accent);}
-    .project-card h3 {color: #fff;font-size: 1.05rem;margin-bottom: 0.5rem;}
-    .project-card p {color: var(--text-muted);font-size: 0.9rem;margin-bottom: 1rem;}
-    .project-card .tech-stack {display: flex;flex-wrap: wrap;gap: 0.4rem;}
-    .project-card .tech-stack span {background: rgba(0, 212, 170, 0.1);padding: 0.2rem 0.6rem;border-radius: 3px;font-size: 0.75rem;color: var(--accent);}
-    
-    /* --- Auth Demo Styles --- */
-    .auth-container { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 2.5rem; max-width: 500px; margin: 0 auto; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-    .auth-container input { width: 100%; padding: 0.9rem; margin-bottom: 1rem; border: 1px solid var(--card-border); background: var(--primary); color: var(--text); border-radius: 4px; outline: none; transition: border-color 0.3s; }
-    .auth-container input:focus { border-color: var(--accent); }
-    .auth-buttons { display: flex; gap: 1rem; justify-content: center; margin-top: 0.5rem; }
-    .auth-btn { flex: 1; padding: 0.8rem; background: transparent; border: 1px solid var(--accent); color: var(--accent); border-radius: 4px; cursor: pointer; transition: all 0.3s; font-weight: 600; }
-    .auth-btn:hover { background: var(--accent); color: var(--primary); }
-    .auth-btn.primary { background: var(--accent); color: var(--primary); }
-    .auth-btn.primary:hover { background: transparent; color: var(--accent); }
-    #user-list-container { text-align: left; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--card-border); }
-    #user-list { list-style: none; padding: 0; margin-top: 1rem; max-height: 200px; overflow-y: auto; }
-    #user-list li { padding: 0.75rem 1rem; background: rgba(0, 212, 170, 0.05); margin-bottom: 0.5rem; border-radius: 4px; border-left: 3px solid var(--accent); color: var(--text); display: flex; align-items: center; }
-    #user-list li::before { content: '👤'; margin-right: 10px; font-size: 0.9rem; }
-
-    /* Footer */
-    footer {text-align: center;padding: 3rem 2rem;border-top: 1px solid var(--card-border);}
-    footer .social-links {display: flex;justify-content: center;gap: 1.5rem;margin-bottom: 1.5rem;}
-    footer .social-links a {color: var(--text-muted);font-size: 0.9rem;transition: color 0.3s;}
-    footer .social-links a:hover {color: var(--accent);}
-    footer p {color: var(--text-muted);font-size: 0.85rem;}
-    
-    /* Responsive */
-    @media (max-width: 768px) {
-      .hero h1 {font-size: 2rem;}
-      .hero .subtitle {font-size: 1rem;}
-      nav ul {gap: 1rem;}
-      nav ul li a {font-size: 0.8rem;}
-      section {padding: 3rem 1.5rem;}
-      nav {top: 28px;}
-      .view-counter {font-size: 0.75rem;padding: 0.3rem 1rem;}
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; line-height: 1.7; color: #1f2937; background: #f9fafb; }
+    header { background: #111827; padding: 1rem 2rem; }
+    header a { color: #fff; text-decoration: none; margin-right: 1.5rem; }
+    main { max-width: 800px; margin: 2rem auto; padding: 0 1.25rem; }
+    .cards { display: grid; gap: 1rem; margin-top: 1.5rem; }
+    .card { display: block; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1.25rem; text-decoration: none; color: inherit; }
+    .card:hover { border-color: #2563eb; }
+    .card h2 { font-size: 1.15rem; color: #2563eb; }
+    #content h1, #content h2, #content h3 { margin: 1.5rem 0 .5rem; }
+    #content p, #content ul, #content ol, #content pre, #content table { margin-bottom: 1rem; }
+    #content ul, #content ol { padding-left: 1.5rem; }
+    #content pre { background: #111827; color: #e5e7eb; padding: 1rem; border-radius: 6px; overflow-x: auto; }
+    #content code { background: #e5e7eb; padding: 0 .25rem; border-radius: 3px; }
+    #content pre code { background: none; padding: 0; }
+    #content table { border-collapse: collapse; }
+    #content th, #content td { border: 1px solid #d1d5db; padding: .4rem .7rem; }
+    #content a { color: #2563eb; }
   </style>
 </head>
 <body>
+  <header>
+    <a href="/">Home</a>
+    <a href="/learn/">Learn</a>
+  </header>
+  <main id="content"></main>
 
-<!-- View Counter Banner -->
-<div class="view-counter">👀 Views: <span id="view-count">...</span></div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const viewCountElement = document.getElementById('view-count');
-
-    fetch('https://57xd6ainse4to36inwwb2pfqou0ofgjo.lambda-url.ap-southeast-1.on.aws/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP Error! Status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        // Unpack nested body string if returned by standard Lambda proxy format
-        let payload = data;
-        if (typeof data.body === 'string') {
-          payload = JSON.parse(data.body);
-        }
-
-        if (payload && payload.view_count !== undefined) {
-          viewCountElement.textContent = Number(payload.view_count).toLocaleString();
-        } else {
-          viewCountElement.textContent = 'N/A';
-        }
-      })
-      .catch(error => {
-        console.error('View Counter Fetch Error:', error);
-        if (viewCountElement) {
-          viewCountElement.textContent = 'N/A';
-        }
-      });
-  });
-</script>
-
-  <nav>
-    <ul>
-      <!-- Live Demo moved to the first spot in navigation -->
-      <li><a href="#demo">Live Demo</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#certifications">Certifications</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#education">Education</a></li>
-      <li><a href="/learn/">Learn with Lukas</a></li>
-    </ul>
-  </nav>
-
-  <section class="hero">
-    <div class="hero-content">
-      <img src="profile.jpg" alt="Lim Chee Hao, Lukas" class="profile-photo">
-      <h1>Lim Chee Hao, <span>Lukas</span></h1>
-      <p class="subtitle">Aspiring Solutions Architect</p>
-      <p class="location">🇸🇬 Singapore</p>
-      <div class="badge-row">
-        <a href="https://www.credly.com/badges/98b79a70-3a7a-4e3e-aa2d-6c386a050036" target="_blank" class="badge">AWS CCP</a>
-        <a href="https://mylogin.exin.nl/polarserver.asp?Script=GetLinkedInPost&CandidateCertificateGUID=AED2F92E-7872-4DAA-8367-9FD9439B39F0" target="_blank" class="badge">CDCP</a>
-        <a href="https://www.credly.com/badges/01c8742f-f120-400b-953f-126e5bb578c4" target="_blank" class="badge">Google IT Support</a>
-        <a href="https://www.scs.org.sg/membership/verify?id=e8adde60-8bab-4b3f-b56e-1293def0ecd7" target="_blank" class="badge">MSCS</a>
-      </div>
-      <a href="https://www.linkedin.com/in/masterchee/" class="cta-btn" target="_blank">Connect on LinkedIn</a>
-    </div>
-  </section>
-
-  <!-- AUTH DEMO SECTION MOVED TO TOP -->
-  <section id="demo">
-    <h2>Serverless Auth Demo</h2>
-    <div class="auth-container">
-      <form id="auth-form">
-        <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">
-          Powered by AWS API Gateway, Lambda, and DynamoDB.
-        </p>
-        <input type="text" id="username" placeholder="Username" required />
-        <input type="password" id="password" placeholder="Password" required />
-        <div class="auth-buttons">
-          <button type="button" class="auth-btn" onclick="registerUser()">Register</button>
-          <button type="button" class="auth-btn primary" onclick="loginUser()">Login</button>
-        </div>
-      </form>
-
-      <div id="user-list-container" style="display: none;">
-        <h3 style="color: var(--accent); margin-bottom: 0.5rem; font-size: 1.1rem;">Registered Users</h3>
-        <p style="color: var(--text-muted); font-size: 0.85rem;">Successfully authenticated. Here is the database scan result:</p>
-        <ul id="user-list"></ul>
-        <button type="button" class="auth-btn" onclick="logoutUser()" style="margin-top: 1.5rem; width: 100%;">Logout / Reset</button>
-      </div>
-    </div>
-  </section>
-
-  <section id="about">
-    <h2>About Me</h2>
-    <div class="about-text">
-      <p>I am a Datacenter Technician — I insert cables to make stuff talk to each other, and I conduct surgeries on stuff to make them healthy. What stuff? Computer stuff.</p>
-      <p>I began my career with a solid foundation in mechanical electronics, honed through my work with the Republic of Singapore Air Force, gaining invaluable experience in troubleshooting computer systems supporting military capabilities. My passion for IT led me to earn certifications with Google IT Support, AWS CCP, and EPI CDCP with a keen interest in Datacenter Operations, Data Analytics, Cloud Computing, Web Development and AI.</p>
-      <p>At AWS, I support as a technician and provision the needs of the datacenters. I maintain and build hardware infrastructure in the cloud. As a team player, I drive and engage in projects to make my workplaces better. As an engineer, I develop purposeful data visuals dedicated to the team.</p>
-      <p>My interest in cloud services drives my enthusiasm to use data integration and data automation tools. I innovate on behalf of my customers with the knowledge I have.</p>
-      <p>As a member of Singapore Computer Society, I am dedicated to stay at the forefront of technological advancements while contributing to a safer, and more productive working environment.</p>
-    </div>
-  </section>
-
-  <section id="experience">
-    <h2>Experience</h2>
-    <div class="timeline">
-      <div class="timeline-item">
-        <h3>Data Center Operations Technician 3</h3>
-        <div class="company">Amazon Web Services (AWS)</div>
-        <div class="date">Dec 2024 – Present · Singapore</div>
-        <ul>
-          <li>Train New Hires on Data Center Operations role</li>
-          <li>Train employees across APAC on Amazon Quicksight and SQL</li>
-          <li>Respond and Manage Datacenter P, T, N Events, Drills, Tabletop exercises</li>
-          <li>Consolidate data for sharing and analysis</li>
-          <li>Build Quicksight Dashboards for Datacenter Teams across APAC</li>
-          <li>Amazon Quicksight POC</li>
-          <li>Run scripts in switches to validate traffic strength and troubleshoot network</li>
-          <li>Contribute and execute innovation projects within the datacenters</li>
-          <li>Code with AI to build functional webpages with databases</li>
-          <li>Run API calls to fetch data point to point</li>
-          <li>SME and assistant to data consolidation related projects</li>
-        </ul>
-      </div>
-      <div class="timeline-item">
-        <h3>Data Center Operations Technician 2</h3>
-        <div class="company">Amazon Web Services (AWS)</div>
-        <div class="date">Jun 2022 – Dec 2024 · 2 yrs 7 mos · Singapore</div>
-        <ul>
-          <li>Rack side cable patching to connect servers to cloud infrastructure</li>
-          <li>Troubleshoot, perform diagnostics, replace server parts</li>
-          <li>Network troubleshooting on switches, patch panels, fiber optics</li>
-          <li>Remote troubleshooting with CLI interfaces</li>
-          <li>Perform SQL data queries and build Quicksight visualizations</li>
-          <li>Created and rolled out Large Scale Event (LSE) collaboration tool</li>
-          <li>Built internal video library to improve trainee conversion rates</li>
-          <li>Consolidated job-specific internal URL webpage reaching thousands globally</li>
-          <li>Centralized infrastructure operations data for business intelligence</li>
-        </ul>
-      </div>
-      <div class="timeline-item">
-        <h3>Datacenter Trainee</h3>
-        <div class="company">Amazon Web Services (AWS)</div>
-        <div class="date">Mar 2022 – Jun 2022 · 4 mos</div>
-        <ul>
-          <li>Learning about operations in a datacenter</li>
-          <li>Working in a datacenter environment</li>
-          <li>Aligning to Amazon Leadership Principles</li>
-        </ul>
-      </div>
-      <div class="timeline-item">
-        <h3>Computer Systems Engineer</h3>
-        <div class="company">Republic of Singapore Air Force</div>
-        <div class="date">Jan 2016 – Feb 2022 · 6 yrs 2 mos · Singapore</div>
-        <ul>
-          <li>Maintenance Forecasting and Events Planning</li>
-          <li>Shift work, On site and On Call support</li>
-          <li>Operations coordinator</li>
-          <li>Preventive and corrective maintenance for C2 Systems</li>
-          <li>Support from servers to users endpoints</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <section id="skills">
-    <h2>Skills</h2>
-    <div class="skills-grid">
-      <div class="skill-category">
-        <h3>Infrastructure</h3>
-        <div class="skill-tags">
-          <span class="skill-tag">Data Centers</span>
-          <span class="skill-tag">Server Hardware</span>
-          <span class="skill-tag">Network Switches</span>
-          <span class="skill-tag">Fiber Optics</span>
-          <span class="skill-tag">Cable Patching</span>
-          <span class="skill-tag">Linux</span>
-          <span class="skill-tag">Windows</span>
-        </div>
-      </div>
-      <div class="skill-category">
-        <h3>Cloud & Data</h3>
-        <div class="skill-tags">
-          <span class="skill-tag">AWS</span>
-          <span class="skill-tag">EC2</span>
-          <span class="skill-tag">S3</span>
-          <span class="skill-tag">Lambda</span>
-          <span class="skill-tag">RDS</span>
-          <span class="skill-tag">Amazon Quicksight</span>
-          <span class="skill-tag">Amazon Bedrock</span>
-          <span class="skill-tag">SQL</span>
-        </div>
-      </div>
-      <div class="skill-category">
-        <h3>Development</h3>
-        <div class="skill-tags">
-          <span class="skill-tag">HTML</span>
-          <span class="skill-tag">CSS</span>
-          <span class="skill-tag">JavaScript</span>
-          <span class="skill-tag">API Integration</span>
-          <span class="skill-tag">Supabase</span>
-          <span class="skill-tag">GitHub</span>
-          <span class="skill-tag">Web Development</span>
-        </div>
-      </div>
-      <div class="skill-category">
-        <h3>Analytics & Tools</h3>
-        <div class="skill-tags">
-          <span class="skill-tag">Data Analytics</span>
-          <span class="skill-tag">Data Visualization</span>
-          <span class="skill-tag">Dashboards</span>
-          <span class="skill-tag">ETL</span>
-          <span class="skill-tag">Troubleshooting</span>
-          <span class="skill-tag">CLI</span>
-          <span class="skill-tag">AI Tools</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="certifications">
-    <h2>Certifications</h2>
-    <div class="cert-grid">
-      <div class="cert-card">
-        <div class="cert-icon">🩺</div>
-        <div>
-          <h3>OFA - First Aid CPR AED</h3>
-          <p>Academiclinic · Apr 2026</p>
-        </div>
-      </div>
-      <div class="cert-card">
-        <div class="cert-icon">🏢</div>
-        <div>
-          <h3><a href="https://mylogin.exin.nl/polarserver.asp?Script=GetLinkedInPost&CandidateCertificateGUID=AED2F92E-7872-4DAA-8367-9FD9439B39F0&ts=465445015" target="_blank">Certified Data Center Professional (CDCP)</a></h3>
-          <p>EPI Academy · Mar 2025</p>
-        </div>
-      </div>
-      <div class="cert-card">
-        <div class="cert-icon">☁️</div>
-        <div>
-          <h3><a href="https://www.credly.com/badges/98b79a70-3a7a-4e3e-aa2d-6c386a050036/public_url" target="_blank">AWS Certified Cloud Practitioner</a></h3>
-          <p>Amazon Web Services · Oct 2024</p>
-        </div>
-      </div>
-      <div class="cert-card">
-        <div class="cert-icon">📊</div>
-        <div>
-          <h3>Google Data Analyst Course</h3>
-          <p>Coursera · Jun 2024</p>
-        </div>
-      </div>
-      <div class="cert-card">
-        <div class="cert-icon">💻</div>
-        <div>
-          <h3><a href="https://www.credly.com/badges/01c8742f-f120-400b-953f-126e5bb578c4" target="_blank">Google IT Support Professional</a></h3>
-          <p>Google via Coursera · Feb 2022</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="projects">
-    <h2>Projects</h2>
-    <div class="projects-grid">
-      <div class="project-card">
-        <h3>The Cloud Resume Challenge</h3>
-        <p>Built and deployed a 3 tier serverless architecture resume website on AWS using Lambda, DynamoDB, Amplify, Github </p>
-        <div class="tech-stack"><span>AWS S3</span><span>AWS Amplify</span><span>AWS Lambda</span><span>DynamoDB</span><span>CloudWatch</span><span>CI/CD Pipeline</span></div>
-      </div>
-      <div class="project-card">
-        <h3>Web App with Global Map & Database</h3>
-        <p>Built and deployed a full-featured web application with global map, location pins, text search, database, authentication, CRUD operations, bulk CSV import, and data export.</p>
-        <div class="tech-stack"><span>Supabase</span><span>Google Gemini</span><span>HTML/CSS/JS</span><span>GitHub</span></div>
-      </div>
-      <div class="project-card">
-        <h3>AI Hackathon – Personalized AI Search</h3>
-        <p>Built an agentic AI chatbot with information retrieval from S3, collaborative docs, web crawlers, and API functions using Amazon QuickSight Spaces.</p>
-        <div class="tech-stack"><span>Amazon S3</span><span>Quick Spaces</span><span>Quick Agent</span><span>Web Crawlers</span><span>API</span></div>
-      </div>
-      <div class="project-card">
-        <h3>LSE Collaboration Tool</h3>
-        <p>Created and rolled out a Large Scale Event collaboration tool to improve LSE SLA response times across datacenter operations.</p>
-        <div class="tech-stack"><span>Microsoft Excel</span><span>Excel Formulas</span></div>
-      </div>
-      <div class="project-card">
-        <h3>APAC Quicksight Dashboards</h3>
-        <p>Built data visualization dashboards for Datacenter Teams across APAC, linking Excel and Redshift databases for automated periodic reporting.</p>
-        <div class="tech-stack"><span>Amazon Quicksight</span><span>Redshift</span><span>SQL</span><span>Excel</span></div>
-      </div>
-      <div class="project-card">
-        <h3>Dual-Boot PC Setup</h3>
-        <p>Configured a Windows/Linux dual-boot system with Pop!_OS, including BIOS configuration, drive management, and 3TB multi-drive storage setup.</p>
-        <div class="tech-stack"><span>Linux</span><span>Pop!_OS</span><span>BIOS</span><span>Diskpart</span></div>
-      </div>
-      <div class="project-card">
-        <h3>Internal Video Library</h3>
-        <p>Built a role-specific video library encouraging self-learning and job clarity, increasing trainee-to-full-time staff conversion rates.</p>
-        <div class="tech-stack"><span>Content Curation</span><span>Training</span><span>Knowledge Management</span></div>
-      </div>
-      <div class="project-card">
-        <h3>Parts Sanitization Toolbox</h3>
-        <p>A grab-n-go toolbox stored in office that gathers and stores all tools involving parts processing within the datahall.</p>
-        <div class="tech-stack"><span>Resourcefulness</span><span>Purchase Ordering</span></div>
-      </div>
-      <div class="project-card">
-        <h3>Improvement Projects Portal</h3>
-        <p>A web portal of improvement projects to Create, Read, Update, and Delete Projects within a database with project details and external links to project resources.</p>
-        <div class="tech-stack"><span>AI Web Design</span><span>API Integration</span><span>Dataset</span><span>3 Tier Architecture</span></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="education">
-    <h2>Education</h2>
-    <div class="edu-item">
-      <h3>Certified Data Center Professional (CDCP)</h3>
-      <div class="school">EPI Academy</div>
-      <div class="date">Mar 2025</div>
-    </div>
-    <div class="edu-item">
-      <h3>Google Data Analyst Course – Data Analytics</h3>
-      <div class="school">Coursera</div>
-      <div class="date">Jan 2024 – Jun 2024</div>
-    </div>
-    <div class="edu-item">
-      <h3>Google IT Support Professional Certificate</h3>
-      <div class="school">Coursera</div>
-      <div class="date">Dec 2021 – Feb 2022</div>
-    </div>
-    <div class="edu-item">
-      <h3>Diploma in Mechatronics</h3>
-      <div class="school">Temasek Polytechnic</div>
-      <div class="date">Mar 2012 – Mar 2015</div>
-    </div>
-  </section>
-
-  <section id="languages">
-    <h2>Languages</h2>
-    <div class="skills-grid">
-      <div class="skill-category">
-        <h3>English</h3>
-        <div class="skill-tags"><span class="skill-tag">Native / Bilingual Proficiency</span></div>
-      </div>
-      <div class="skill-category">
-        <h3>Chinese</h3>
-        <div class="skill-tags"><span class="skill-tag">Native / Bilingual Proficiency</span></div>
-      </div>
-      <div class="skill-category">
-        <h3>Vietnamese</h3>
-        <div class="skill-tags"><span class="skill-tag">Elementary Proficiency</span></div>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="social-links">
-      <a href="https://www.linkedin.com/in/masterchee/" target="_blank">LinkedIn</a>
-      <a href="https://www.credly.com/users/chee-hao-lim" target="_blank">Credly</a>
-      <a href="https://github.com/Masterchee" target="_blank">GitHub</a>
-    </div>
-    <p>© 2026 Lim Chee Hao, Lukas. Built with passion for technology.</p>
-  </footer>
-
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
   <script>
-    // 1. Smooth scrolling for navigation links
-    document.querySelectorAll('nav a').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      });
-    });
+    // Add a new track here after creating its folder under /learn.
+    const TRACKS = [
+      { slug: "networking-osi",    title: "Networking & the OSI Model", desc: "Bottom-up troubleshooting, layer by layer." },
+      { slug: "operating-systems", title: "Operating Systems",          desc: "Processes, memory, file systems, and the CLI." },
+      { slug: "cloud-aws",         title: "Cloud (AWS)",                desc: "How lukaslim.com itself is built and delivered." },
+      { slug: "databases",         title: "Databases",                  desc: "SQL vs. NoSQL, indexing, and connection flows." }
+    ];
 
-    // 2. Fade-in animation on scroll
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
+    const el = document.getElementById("content");
+    const page = new URLSearchParams(location.search).get("p");
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-        }
-      });
-    }, observerOptions);
-
-    document.querySelectorAll('.timeline-item, .skill-category, .cert-card, .project-card, .edu-item, .auth-container').forEach(el => {
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(20px)';
-      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-      observer.observe(el);
-    });
-
-    // --- 3. SERVERLESS AUTH DEMO LOGIC ---
-    
-    // REPLACE THIS URL WITH YOUR NEW API GATEWAY INVOKE URL
-    const AUTH_API_URL = "https://g43wvkz1y7.execute-api.ap-southeast-1.amazonaws.com"; 
-
-    async function registerUser() {
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      
-      if(!username || !password) {
-        alert("Please enter a username and password.");
-        return;
-      }
-
-      try {
-        const response = await fetch(`${AUTH_API_URL}/register`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password })
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-          alert("Registration successful! You can now log in.");
-        } else {
-          alert("Error: " + (data.error || "Failed to register"));
-        }
-      } catch (error) {
-        console.error("Registration Error:", error);
-        alert("Network error. Did you configure CORS on API Gateway?");
-      }
+    function showHub() {
+      el.innerHTML = "<h1>Tech Education Hub</h1><p>Field guides from a technician's perspective.</p>" +
+        '<div class="cards">' + TRACKS.map(t =>
+          `<a class="card" href="?p=${t.slug}"><h2>${t.title}</h2><p>${t.desc}</p></a>`).join("") + "</div>";
     }
 
-    async function loginUser() {
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      
-      if(!username || !password) {
-        alert("Please enter a username and password.");
-        return;
-      }
-
-      try {
-        const response = await fetch(`${AUTH_API_URL}/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password })
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-          displayUsers(data.registered_users);
-        } else {
-          alert("Error: " + (data.error || "Invalid credentials"));
-        }
-      } catch (error) {
-        console.error("Login Error:", error);
-        alert("Network error. Did you configure CORS on API Gateway?");
-      }
+    async function showPage(p) {
+      // Allow only lowercase letters, digits, hyphens and slashes; block path traversal.
+      if (!/^[a-z0-9-]+(\/[a-z0-9-]+)*$/.test(p)) { el.textContent = "Invalid page."; return; }
+      const res = await fetch(`${p}/index.md`);
+      if (!res.ok) { el.innerHTML = "<h1>Not found</h1><p><a href='/learn/'>Back to Learn</a></p>"; return; }
+      const md = await res.text();
+      el.innerHTML = DOMPurify.sanitize(marked.parse(md)) + "<p><a href='/learn/'>&larr; All tracks</a></p>";
+      const h1 = el.querySelector("h1");
+      if (h1) document.title = h1.textContent + " | Lukas Lim";
     }
 
-    function displayUsers(usersArray) {
-      document.getElementById('auth-form').style.display = 'none';
-      const container = document.getElementById('user-list-container');
-      const listElement = document.getElementById('user-list');
-      
-      container.style.display = 'block';
-      listElement.innerHTML = ''; 
-      
-      if (usersArray && Array.isArray(usersArray)) {
-        usersArray.forEach(user => {
-          const li = document.createElement('li');
-          li.textContent = user;
-          listElement.appendChild(li);
-        });
-      } else {
-        const li = document.createElement('li');
-        li.textContent = "No users found.";
-        listElement.appendChild(li);
-      }
-    }
-
-    function logoutUser() {
-      document.getElementById('auth-form').reset();
-      document.getElementById('auth-form').style.display = 'block';
-      document.getElementById('user-list-container').style.display = 'none';
-    }
+    page ? showPage(page) : showHub();
   </script>
 </body>
 </html>
