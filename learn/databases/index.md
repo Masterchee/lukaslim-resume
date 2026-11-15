@@ -4,6 +4,31 @@ A database is a program that stores data on disk and lets other programs ask for
 
 ---
 
+## Key Terms
+Read these first. Come back to them whenever a word is unfamiliar.
+
+| Term | Meaning |
+|------|---------|
+| **Table / Row / Column** | A set of records / one record / one field of a record |
+| **Schema** | The structure of the data: tables, columns, types, constraints |
+| **Primary key** | A column (or columns) that uniquely identifies each row |
+| **Foreign key** | A column that points to another table's primary key |
+| **Join** | A query that combines rows from tables using matching values |
+| **Index** | A separate sorted structure that lets the engine find rows without scanning the whole table |
+| **Query plan** | The steps the engine chooses to run a query (see it with `EXPLAIN`) |
+| **Full table scan** | Reading every row to answer a query |
+| **Transaction** | A group of operations that succeed or fail together |
+| **ACID** | Atomicity, Consistency, Isolation, Durability: the guarantees of a transaction |
+| **WAL** | Write-ahead log. Changes are logged before the data pages, which makes commits durable |
+| **Lock** | A mechanism that stops conflicting changes to the same data at once |
+| **Normalization** | Organizing tables to avoid duplicated data |
+| **Document / Key-value store** | NoSQL models that store flexible records / values looked up by key |
+| **Connection pool** | A set of reusable open database connections |
+| **Replication** | Keeping copies of data on other servers for availability or read scale |
+| **PITR** | Point-in-time recovery: restore to an exact moment using backups plus logs |
+
+---
+
 ## 1. The 30-Second Mental Model
 
 A database is a **filing room with a clerk**. The data sits in cabinets (disk). The clerk (the database engine) keeps a few drawers on the desk (memory cache) and an **index** card file that says where things are. Without the card file, the clerk walks through every cabinet to find one record.
@@ -183,8 +208,52 @@ You only need Python, which includes SQLite. Nothing to install or configure.
 
 ---
 
+## Cheat Sheet
+
+| Task | SQL / Command |
+|------|---------------|
+| Create a table | `CREATE TABLE t (id INTEGER PRIMARY KEY, name TEXT);` |
+| Insert / update / delete | `INSERT INTO t ...`, `UPDATE t SET ... WHERE ...`, `DELETE FROM t WHERE ...` |
+| Filter and sort | `SELECT * FROM t WHERE col = 1 ORDER BY col;` |
+| Count and group | `SELECT col, COUNT(*) FROM t GROUP BY col;` |
+| Join two tables | `SELECT ... FROM a JOIN b ON b.a_id = a.id;` |
+| Add an index | `CREATE INDEX idx_t_col ON t(col);` |
+| See the query plan | `EXPLAIN SELECT ...` (`EXPLAIN ANALYZE` also runs it, in PostgreSQL) |
+| Transaction | `BEGIN; ... COMMIT;` or `ROLLBACK;` |
+| Safe parameters (Python) | `cursor.execute("... WHERE email = %s", (email,))` |
+| Test the DB port | `nc -vz <host> 5432` (PostgreSQL) or `3306` (MySQL) |
+
+| Pick this... | ...when |
+|--------------|---------|
+| SQL | You need joins, constraints and strict transactions |
+| Document / key-value | You fetch items by key at large scale or need a flexible shape |
+| Cache (for example Redis) | You need very fast reads of data you can rebuild |
+
+| Slow query? | Check |
+|-------------|-------|
+| `SCAN` / `Seq Scan` in the plan | Add an index on the filtered column |
+| Function around the column in `WHERE` | Rewrite so the bare column is compared |
+| Many small queries in a loop | Combine into one query (avoid N+1) |
+
+---
+
 ## Further Reading
-- [SQL vs NoSQL (MongoDB)](https://www.mongodb.com/resources/basics/databases/nosql-explained/nosql-vs-sql)
-- [SQL vs NoSQL performance considerations](https://cloudwithsw.hashnode.dev/sql-vs-nosql-performance-optimization-considerations)
-- [SQL vs NoSQL and scaling](https://abstractalgorithms.hashnode.dev/system-design-databases-sql-vs-nosql-and-scaling)
-- [The art of choosing the right database](https://dev.to/dhanush___b/how-to-choose-the-right-db-for-your-application--c7h)
+- [SQL vs NoSQL (MongoDB)](https://www.mongodb.com/resources/basics/databases/nosql-explained/nosql-vs-sql): the two models side by side with use cases.
+- [SQL vs NoSQL performance considerations](https://cloudwithsw.hashnode.dev/sql-vs-nosql-performance-optimization-considerations): where each one is faster.
+- [SQL vs NoSQL and scaling](https://abstractalgorithms.hashnode.dev/system-design-databases-sql-vs-nosql-and-scaling): replication, sharding and the trade-offs behind the choice.
+- [The art of choosing the right database](https://dev.to/dhanush___b/how-to-choose-the-right-db-for-your-application--c7h): how storage engines affect performance.
+- [How SQL databases guarantee ACID](https://abstractalgorithms.hashnode.dev/acid-properties-in-sql-databases): what each ACID letter means and how databases implement it.
+- [Database Glossary](https://adamdjellouli.com/articles/databases_notes/01_introduction_to_databases/05_glossary): clear definitions for keys, joins, indexes and transactions.
+
+---
+
+## Your Notes
+**Have you written your own notes on this lesson?**
+
+Taking notes in your own words is one of the best ways to learn. Before you move on, close this page and try to write down:
+
+- The mental model, explained as if to a friend.
+- The three commands or ideas you expect to use most.
+- One thing that confused you, and what you will do to figure it out.
+
+Notes you wrote yourself will stick far better than notes you copied.

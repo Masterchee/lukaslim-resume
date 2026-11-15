@@ -4,6 +4,32 @@ The OS is not a black box. It is a kernel that shares the CPU, memory and disks 
 
 ---
 
+## Key Terms
+Read these first. Come back to them whenever a word is unfamiliar.
+
+| Term | Meaning |
+|------|---------|
+| **Kernel** | The core of the OS. It manages CPU, memory, devices and security |
+| **Process / PID** | A running program / its unique number |
+| **Thread** | A unit of work inside a process; threads of one process share its memory |
+| **Daemon / Service** | A background process, usually started at boot |
+| **systemd** | The first process (PID 1) on most Linux systems. It starts and supervises services |
+| **Bootloader (GRUB)** | Program that loads the kernel into memory |
+| **initramfs** | Temporary filesystem the kernel uses during boot to reach the real disk |
+| **UEFI / BIOS** | Firmware that starts the machine and finds the bootloader |
+| **System call** | How a program asks the kernel to do something, such as read a file |
+| **Load average** | Average number of processes running or waiting for the CPU |
+| **Swap** | Disk space used as overflow when RAM runs out. Much slower than RAM |
+| **Page cache** | Spare RAM the kernel uses to keep recently read files, so "used" is not always "full" |
+| **OOM killer** | Kernel feature that ends a process when memory is exhausted |
+| **File system** | The structure that organizes data on a disk (ext4, xfs, NTFS) |
+| **Mount point** | The directory where a file system is attached |
+| **Inode** | The record holding a file's metadata and disk location (not its name) |
+| **Permissions (rwx)** | Read, write and execute rights for owner, group and others |
+| **Signal** | A message sent to a process, such as SIGTERM (ask to stop) or SIGKILL (force) |
+
+---
+
 ## 1. The 30-Second Mental Model
 
 Think of the OS as a building manager. Programs (tenants) never touch the hardware directly. They ask the **kernel** for CPU time, memory and disk access, and the kernel decides who gets what and who is allowed in.
@@ -184,8 +210,54 @@ Use a Linux VM, WSL, or a free-tier cloud instance. These steps only read system
 
 ---
 
+## Cheat Sheet
+
+| Task | Command |
+|------|---------|
+| Boot time and slow units | `systemd-analyze`, `systemd-analyze blame` |
+| Logs from this / last boot | `journalctl -b`, `journalctl -b -1` |
+| Recent errors only | `journalctl -p 3 -xb` |
+| Failed services | `systemctl --failed` |
+| Service control | `systemctl status\|start\|stop\|restart <svc>` |
+| Logs for one service | `journalctl -u <svc>` |
+| All processes | `ps aux` |
+| Top CPU / memory users | `ps aux --sort=-%cpu \| head`, `ps aux --sort=-%mem \| head` |
+| Live view | `top`, `htop` |
+| Load and uptime | `uptime`, `nproc` |
+| Stop a process | `kill <PID>` (polite), `kill -9 <PID>` (force) |
+| Memory | `free -h` (read the *available* column) |
+| Swapping | `vmstat 1 5` (watch `si` and `so`) |
+| Disks and partitions | `lsblk` |
+| Space / inodes per file system | `df -h`, `df -i` |
+| What is using space | `du -sh /var/* \| sort -h` |
+| Permissions | `ls -l`, `chmod 750 <file>`, `chown user:group <file>` |
+| Who am I | `id`, `whoami` |
+
+| Permission | Number |
+|------------|--------|
+| read | 4 |
+| write | 2 |
+| execute | 1 |
+| Example: `rwxr-x---` | `750` |
+
+---
+
 ## Further Reading
-- [Linux Boot Process: Step-by-Step Guide](https://www.magnetbyte.com/linux-boot-process-step-by-step)
-- [UEFI, GRUB, initramfs & systemd](https://www.golinuxcloud.com/linux-boot-process-explained-step-detail/)
-- [Understand GRUB, initramfs, and systemd failures](https://commandinline.com/linux-boot-process-grub-systemd/)
-- [Unix and Internet Fundamentals HOWTO](https://www.linuxdoc.org/HOWTO/Unix-and-Internet-Fundamentals-HOWTO.html)
+- [Linux Boot Process: Step-by-Step Guide](https://www.magnetbyte.com/linux-boot-process-step-by-step): each boot stage and how to find which one failed.
+- [UEFI, GRUB, initramfs & systemd](https://www.golinuxcloud.com/linux-boot-process-explained-step-detail/): how the boot path differs by firmware and storage layout.
+- [Understand GRUB, initramfs, and systemd failures](https://commandinline.com/linux-boot-process-grub-systemd/): the failure mode and recovery for each boot stage.
+- [Unix and Internet Fundamentals HOWTO](https://www.linuxdoc.org/HOWTO/Unix-and-Internet-Fundamentals-HOWTO.html): the big picture of how a Unix-like system and the internet fit together.
+- [The Commands I Run Before Troubleshooting Any Linux System](https://ostechnix.com/linux-troubleshooting-commands-checklist/): a quick first-look checklist for a misbehaving machine.
+
+---
+
+## Your Notes
+**Have you written your own notes on this lesson?**
+
+Taking notes in your own words is one of the best ways to learn. Before you move on, close this page and try to write down:
+
+- The mental model, explained as if to a friend.
+- The three commands or ideas you expect to use most.
+- One thing that confused you, and what you will do to figure it out.
+
+Notes you wrote yourself will stick far better than notes you copied.

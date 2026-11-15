@@ -6,6 +6,32 @@ AWS has hundreds of services, but a website only needs a handful. This guide fol
 
 ---
 
+## Key Terms
+Read these first. Come back to them whenever a word is unfamiliar.
+
+| Term | Meaning |
+|------|---------|
+| **Region / Availability Zone** | A geographic area of AWS / an isolated data center group inside it |
+| **Route 53** | AWS DNS service (and domain registrar) |
+| **Hosted zone** | The container for a domain's DNS records in Route 53 |
+| **Alias record** | Route 53 record type that points a name, including the root domain, at an AWS resource such as CloudFront |
+| **CNAME** | Standard DNS record that points one name at another name. Not allowed at the root domain |
+| **TTL** | How long DNS answers or cached CDN content may be reused |
+| **CloudFront** | AWS content delivery network (CDN) |
+| **Distribution** | A CloudFront configuration: origins, behaviors, certificate, domain names |
+| **Edge location** | A CloudFront cache site close to viewers |
+| **Origin** | Where CloudFront fetches content from, such as an S3 bucket |
+| **Behavior** | A rule that applies cache and access settings to a URL path pattern |
+| **Invalidation** | A request to remove cached copies before their TTL expires |
+| **S3 bucket / Object** | A container for files / one stored file with its key (path) |
+| **OAC** | Origin Access Control. Lets CloudFront read a private S3 bucket |
+| **ACM** | AWS Certificate Manager. Issues free TLS certificates |
+| **IAM** | Identity and Access Management. Controls who can do what in AWS |
+| **Bucket policy** | A JSON permission document attached to a bucket |
+| **Least privilege** | Grant only the permissions needed, nothing more |
+
+---
+
 ## 1. The 30-Second Mental Model
 
 Think of a shop chain. The **phone book** (Route 53) tells you the address of the nearest branch. The **local branch** (CloudFront edge location) keeps popular items on the shelf, so you don't wait for the **warehouse** (S3). The **security guard** (ACM + IAM) makes sure the connection is encrypted and that only the branch, not the public, can enter the warehouse.
@@ -140,8 +166,48 @@ Use the **AWS Management Console** with a free-tier account or sandbox. Allow ab
 
 ---
 
+## Cheat Sheet
+
+| Task | Where / Command |
+|------|-----------------|
+| Point a domain at CloudFront | Route 53 hosted zone, **Alias** A record to the distribution |
+| Alias record requirement | The distribution must list the same name as an alternate domain name |
+| Root domain (`example.com`) | Use an Alias record (a CNAME is not allowed at the root) |
+| Make the bucket private | S3 **Block all public access** on, plus **OAC** on the origin |
+| Allow CloudFront to read | Bucket policy for `cloudfront.amazonaws.com` with `AWS:SourceArn` set to the distribution |
+| HTTPS certificate for CloudFront | ACM certificate requested in **us-east-1** |
+| Serve `/` as the home page | Default root object `index.html` (top level only) |
+| Force HTTPS | Viewer protocol policy: **Redirect HTTP to HTTPS** |
+| Show updated files | Create an **invalidation** (for example `/*`) |
+| Check DNS | `dig +short www.example.com`, `dig NS example.com` |
+| Check caching | `curl -I https://www.example.com` (look at `x-cache`, `age`) |
+
+| Error | First thing to check |
+|-------|----------------------|
+| `NXDOMAIN` | Record missing, or registrar name servers don't match the hosted zone |
+| Certificate warning | Name missing from the certificate, or not attached to the distribution |
+| `403 AccessDenied` | Bucket policy / OAC, or the object doesn't exist |
+| Old content | Cache: invalidate or wait for TTL |
+
+---
+
 ## Further Reading
-- [AWS docs: Get started with a secure static website](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/getting-started-secure-static-website-cloudformation-template.html)
-- [Set up S3 with CloudFront for a static site](https://oneuptime.com/blog/post/2026-02-12-s3-cloudfront-cdn-backed-static-site/view)
-- [Static site hosting on AWS: S3, CloudFront, ACM and Route 53](https://dev.to/josh_blair/static-site-hosting-on-aws-s3-cloudfront-acm-and-route-53-20b2)
-- [Host a static site with HTTPS and your own domain](https://www.golinuxcloud.com/create-s3-static-website-custom-domain/)
+- [AWS docs: Get started with a secure static website](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/getting-started-secure-static-website-cloudformation-template.html): the official pattern with OAC.
+- [AWS docs: Routing traffic to a CloudFront distribution](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-to-cloudfront-distribution.html): how alias records work and why they can sit at the root domain.
+- [AWS docs: Choosing between alias and non-alias records](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resource-record-sets-choosing-alias-non-alias.html): when to use an alias and when to use a CNAME.
+- [Set up S3 with CloudFront for a static site](https://oneuptime.com/blog/post/2026-02-12-s3-cloudfront-cdn-backed-static-site/view): why the bucket can stay private.
+- [Static site hosting on AWS: S3, CloudFront, ACM and Route 53](https://dev.to/josh_blair/static-site-hosting-on-aws-s3-cloudfront-acm-and-route-53-20b2): why the certificate must be in us-east-1.
+- [Host a static site with HTTPS and your own domain](https://www.golinuxcloud.com/create-s3-static-website-custom-domain/): an end-to-end walkthrough with a custom domain.
+
+---
+
+## Your Notes
+**Have you written your own notes on this lesson?**
+
+Taking notes in your own words is one of the best ways to learn. Before you move on, close this page and try to write down:
+
+- The mental model, explained as if to a friend.
+- The three commands or ideas you expect to use most.
+- One thing that confused you, and what you will do to figure it out.
+
+Notes you wrote yourself will stick far better than notes you copied.

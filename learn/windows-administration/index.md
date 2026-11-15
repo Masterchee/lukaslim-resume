@@ -4,6 +4,33 @@ Windows administration is controlling **who can do what** on a machine, keeping 
 
 ---
 
+## Key Terms
+Read these first. Come back to them whenever a word is unfamiliar.
+
+| Term | Meaning |
+|------|---------|
+| **SID** | Security identifier. The unique ID of a user or group |
+| **Access token** | The identity, groups and privileges Windows attaches to a signed-in user's processes |
+| **ACL / ACE** | The permission list on an object / one entry in that list |
+| **Privilege** | A system-wide right, such as backing up files, separate from file permissions |
+| **UAC** | User Account Control. Runs administrators with a limited token until they elevate |
+| **Elevation** | Starting a program with the full administrator token |
+| **Standard user** | Account that can't change system-wide settings |
+| **Administrators group** | Local group with full control of the machine |
+| **Operator groups** | Narrower groups for one kind of job, such as Backup Operators |
+| **Power Users** | Legacy group kept for compatibility. Not a supported way to delegate today |
+| **Active Directory (AD)** | Directory service that holds domain users, groups and computers |
+| **Domain controller (DC)** | Server that runs AD and handles domain sign-ins |
+| **OU** | Organizational unit. A folder in AD used for delegation and policy |
+| **Group Policy / GPO** | Central settings pushed to many computers |
+| **RDP** | Remote Desktop Protocol, on port 3389 |
+| **NLA** | Network Level Authentication. The user proves identity before a session starts |
+| **Event ID** | The number that identifies a type of event in the Windows logs |
+| **LAPS** | Local Administrator Password Solution. A unique, rotating local admin password per PC |
+| **PowerShell cmdlet** | A PowerShell command, named Verb-Noun such as `Get-Service` |
+
+---
+
 ## 1. The 30-Second Mental Model
 
 Every action on Windows is performed by a **security principal** (a user or group) carrying an **access token**. The token lists the user's identity, group memberships and special **privileges**. When a program touches a file, service or registry key, Windows compares the token with that object's **permissions (ACL)** and allows or denies it.
@@ -323,12 +350,69 @@ Use a **virtual machine or a spare PC** running Windows Pro or Enterprise. Don't
 
 ---
 
+## Cheat Sheet
+Run PowerShell as administrator for anything that changes the system.
+
+| Task | Command |
+|------|---------|
+| My groups and privileges | `whoami /groups`, `whoami /priv` |
+| Local users / groups | `Get-LocalUser`, `Get-LocalGroup` |
+| Who is an administrator | `Get-LocalGroupMember Administrators` |
+| Create a user | `New-LocalUser -Name x -Password (Read-Host -AsSecureString)` |
+| Add to a group | `Add-LocalGroupMember -Group "<group>" -Member "<user>"` |
+| Running services | `Get-Service \| Where-Object Status -eq 'Running'` |
+| Restart a service | `Restart-Service -Name <name>` |
+| Top CPU processes | `Get-Process \| Sort-Object CPU -Descending \| Select -First 10` |
+| Recent errors | `Get-WinEvent -FilterHashtable @{LogName='System'; Level=2} -MaxEvents 20` |
+| Failed sign-ins | `Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4625} -MaxEvents 10` |
+| View / set NTFS permissions | `icacls <path>`, `icacls <path> /grant "user:(OI)(CI)M"` |
+| Repair Windows | `DISM /Online /Cleanup-Image /RestoreHealth`, then `sfc /scannow` |
+| Free disk space | `Get-Volume` |
+| Port test | `Test-NetConnection <host> -Port 3389` |
+| Connect by RDP | `mstsc /v:<host>` |
+| Who is logged on | `quser /server:<host>` |
+| Apply / check Group Policy | `gpupdate /force`, `gpresult /r` |
+
+| Event ID | Meaning |
+|----------|---------|
+| 4624 / 4625 | Sign-in succeeded / failed (type 10 = Remote Desktop) |
+| 4672 | Administrator-level sign-in |
+| 4720 / 4726 | Account created / deleted |
+| 4732 | Member added to a local group |
+
+| Group | What it allows |
+|-------|----------------|
+| Administrators | Everything |
+| Remote Desktop Users | Sign in with RDP |
+| Backup Operators | Back up and restore any file (high risk) |
+| Event Log Readers | Read event logs |
+| Power Users | Legacy. Don't use for delegation |
+
+---
+
 ## Further Reading
-- [Microsoft: Built-in Administrator Account Disabled (Power Users group deprecated)](https://learn.microsoft.com/en-us/archive/blogs/uac/built-in-administrator-account-disabled)
-- [Microsoft: User can't authenticate or must authenticate twice (RDP and NLA)](https://learn.microsoft.com/en-us/troubleshoot/windows-server/remote/cannot-authenticate-must-authenticate-twice)
-- [Windows Built-in Users, Default Groups and Special Identities (SS64)](https://ss64.com/nt/syntax-security_groups.html)
-- [Default Local Groups (ITFreeTraining)](https://itfreetraining.com/lesson/default-local-groups/)
-- [Best Practices to Secure Remote Desktop Access (NinjaOne)](https://www.ninjaone.com/blog/best-practices-to-secure-remote-desktop-access/)
-- [How to Enable Remote Administration in Windows Safely (NinjaOne)](https://www.ninjaone.com/blog/how-to-enable-remote-administration-in-windows-safely/)
-- [Microsoft Learn: Understand Active Directory Group Policy Security Settings](https://learn.microsoft.com/en-us/training/modules/understand-active-directory-security-policies/)
-- [Microsoft Learn: ActiveDirectory PowerShell module](https://learn.microsoft.com/en-us/powershell/module/activedirectory/?view=windowsserver2022-ps)
+- [Microsoft: Built-in Administrator Account Disabled (Power Users group deprecated)](https://learn.microsoft.com/en-us/archive/blogs/uac/built-in-administrator-account-disabled): the official statement that Power Users is deprecated since Vista.
+- [Microsoft: User can't authenticate or must authenticate twice (RDP and NLA)](https://learn.microsoft.com/en-us/troubleshoot/windows-server/remote/cannot-authenticate-must-authenticate-twice): why NLA fails when the user isn't in Remote Desktop Users.
+- [Microsoft: icacls](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/icacls): full syntax for viewing and changing NTFS permissions.
+- [Microsoft: Get-WinEvent](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics/get-winevent?view=powershell-7.5): filtering the event logs from PowerShell.
+- [Microsoft: How to Manage Local Users and Groups using PowerShell](https://techcommunity.microsoft.com/blog/itopstalkblog/how-to-manage-local-users-and-groups-using-powershell/733544): creating accounts and changing passwords safely.
+- [Windows Built-in Users, Default Groups and Special Identities (SS64)](https://ss64.com/nt/syntax-security_groups.html): what each built-in group can and can't do.
+- [Default Local Groups (ITFreeTraining)](https://itfreetraining.com/lesson/default-local-groups/): a walk through the default local groups, including Power Users history.
+- [Best Practices to Secure Remote Desktop Access (NinjaOne)](https://www.ninjaone.com/blog/best-practices-to-secure-remote-desktop-access/): layered controls for RDP.
+- [How to Enable Remote Administration in Windows Safely (NinjaOne)](https://www.ninjaone.com/blog/how-to-enable-remote-administration-in-windows-safely/): enabling RDP with NLA and limiting who can connect.
+- [Repairing Windows in the Right Order](https://wesellis.com/blog/repair-windows-with-dism-and-sfc/): why DISM goes before SFC.
+- [Microsoft Learn: Understand Active Directory Group Policy Security Settings](https://learn.microsoft.com/en-us/training/modules/understand-active-directory-security-policies/): Group Policy security settings at scale.
+- [Microsoft Learn: ActiveDirectory PowerShell module](https://learn.microsoft.com/en-us/powershell/module/activedirectory/?view=windowsserver2022-ps): the cmdlets for managing AD from PowerShell.
+
+---
+
+## Your Notes
+**Have you written your own notes on this lesson?**
+
+Taking notes in your own words is one of the best ways to learn. Before you move on, close this page and try to write down:
+
+- The mental model, explained as if to a friend.
+- The three commands or ideas you expect to use most.
+- One thing that confused you, and what you will do to figure it out.
+
+Notes you wrote yourself will stick far better than notes you copied.

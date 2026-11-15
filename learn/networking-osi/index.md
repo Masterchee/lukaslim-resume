@@ -4,6 +4,30 @@ Most courses make you memorize seven layers. This guide uses them as a **trouble
 
 ---
 
+## Key Terms
+Read these first. Come back to them whenever a word is unfamiliar.
+
+| Term | Meaning |
+|------|---------|
+| **OSI model** | A 7-layer reference model that splits networking into jobs, used as a common vocabulary |
+| **TCP/IP model** | The 4-layer model the real internet uses (Link, Internet, Transport, Application) |
+| **Frame / Packet / Segment** | The data unit at Layer 2 / Layer 3 / Layer 4 |
+| **MAC address** | Hardware address of a network interface, used inside one local network |
+| **ARP** | Maps an IP address to a MAC address on the local network |
+| **IP address** | Logical address of a host on a network |
+| **Subnet mask / CIDR** | Shows which part of an IP address is the network (for example `/24`) |
+| **Default gateway** | The router a host uses for any destination outside its own subnet |
+| **Routing table** | The list of rules a host or router uses to choose the next hop |
+| **TCP / UDP** | Reliable, ordered transport / fast transport with no delivery guarantee |
+| **Port** | Number that identifies a program on a host (for example 443 for HTTPS) |
+| **Socket** | One end of a network connection: an IP address plus a port |
+| **DNS** | Turns names into IP addresses |
+| **TTL** | In DNS, how long an answer may be cached. In IP, the hop limit that stops packets looping forever |
+| **TLS** | Encrypts a connection and proves the server's identity with a certificate |
+| **Latency / Packet loss** | Delay for a round trip / share of packets that never arrive |
+
+---
+
 ## 1. The 30-Second Mental Model
 
 Sending data is like posting a parcel. You put the letter in an envelope (Layer 4), write the street address on it (Layer 3), hand it to the local courier who knows which door to knock on (Layer 2), and the courier drives the road (Layer 1). Each layer only cares about its own job and wraps the data it receives from the layer above.
@@ -172,8 +196,50 @@ You only need a terminal and an internet connection. Everything here is read-onl
 
 ---
 
+## Cheat Sheet
+Modern Linux uses `ip` and `ss`. The older `ifconfig` and `netstat` still appear on legacy systems.
+
+| Task | Command |
+|------|---------|
+| Link state (L1) | `ip link show`, `ethtool <iface>` |
+| My IP addresses | `ip addr show` (Windows: `ipconfig /all`) |
+| ARP / neighbour table (L2) | `ip neigh show` or `arp -a` |
+| Routing table, default gateway (L3) | `ip route show` (Windows: `route print`) |
+| Reachability | `ping -c 3 <host>` (Windows: `ping -n 3 <host>`) |
+| Path to a host | `traceroute <host>` (Windows: `tracert <host>`) |
+| Listening ports and owners (L4) | `ss -tulpn` |
+| Active TCP connections | `ss -tn state established` |
+| Test a port | `nc -vz <host> <port>` (Windows: `Test-NetConnection <host> -Port <port>`) |
+| DNS lookup (L7) | `dig <name>` or `nslookup <name>` |
+| HTTP status and headers | `curl -I https://<host>` |
+| Full connection detail (DNS, TCP, TLS, HTTP) | `curl -v https://<host>` |
+| See what packets did | `sudo tcpdump -i <iface> host <ip>` |
+
+| If you see... | Think... |
+|---------------|----------|
+| Gateway ping fails | Layer 1-2 |
+| IP works, name fails | DNS (Layer 7) |
+| Connection refused | Host up, nothing listening |
+| Connection timed out | Packets dropped (firewall or routing) |
+
+---
+
 ## Further Reading
-- [Diagnose a network problem on Linux](https://www.stephane-robert.info/en/docs/linux/networking/diagnostics/)
-- [Network Troubleshooting: Ping, Traceroute & Debug Methods](https://www.networkershome.com/fundamentals/networking/network-troubleshooting-ping-traceroute-debug/)
-- [OSI Model to TCP/IP Mapping](https://computingforgeeks.com/osi-tcp-ip-model-explained/)
-- [Network Troubleshooting Workflow](https://inventivehq.com/blog/network-troubleshooting-workflow)
+- [Diagnose a network problem on Linux](https://www.stephane-robert.info/en/docs/linux/networking/diagnostics/): a symptom-first method for finding the failing layer.
+- [Network Troubleshooting: Ping, Traceroute & Debug Methods](https://www.networkershome.com/fundamentals/networking/network-troubleshooting-ping-traceroute-debug/): the divide-and-conquer approach with the common tools.
+- [OSI Model to TCP/IP Mapping](https://computingforgeeks.com/osi-tcp-ip-model-explained/): how the 7 OSI layers fold into the 4 TCP/IP layers.
+- [Network Troubleshooting Workflow](https://inventivehq.com/blog/network-troubleshooting-workflow): what each failing check tells you about the layer.
+- [Linux Networking Commands for Beginner Sysadmins](https://shellsamurai.com/linux-networking-commands-beginner-sysadmins/): more detail on `ip`, `ss`, `dig`, `curl` and `traceroute`.
+
+---
+
+## Your Notes
+**Have you written your own notes on this lesson?**
+
+Taking notes in your own words is one of the best ways to learn. Before you move on, close this page and try to write down:
+
+- The mental model, explained as if to a friend.
+- The three commands or ideas you expect to use most.
+- One thing that confused you, and what you will do to figure it out.
+
+Notes you wrote yourself will stick far better than notes you copied.
