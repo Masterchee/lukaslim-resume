@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learn | Lukas Lim</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; line-height: 1.7; color: #1f2937; background: #f9fafb; }
+    header { background: #111827; padding: 1rem 2rem; }
+    header a { color: #fff; text-decoration: none; margin-right: 1.5rem; }
+    main { max-width: 800px; margin: 2rem auto; padding: 0 1.25rem; }
+    .cards { display: grid; gap: 1rem; margin-top: 1.5rem; }
+    .card { display: block; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1.25rem; text-decoration: none; color: inherit; }
+    .card:hover { border-color: #2563eb; }
+    .card h2 { font-size: 1.15rem; color: #2563eb; }
+    #content h1, #content h2, #content h3 { margin: 1.5rem 0 .5rem; }
+    #content p, #content ul, #content ol, #content pre, #content table { margin-bottom: 1rem; }
+    #content ul, #content ol { padding-left: 1.5rem; }
+    #content pre { background: #111827; color: #e5e7eb; padding: 1rem; border-radius: 6px; overflow-x: auto; }
+    #content code { background: #e5e7eb; padding: 0 .25rem; border-radius: 3px; }
+    #content pre code { background: none; padding: 0; }
+    #content table { border-collapse: collapse; }
+    #content th, #content td { border: 1px solid #d1d5db; padding: .4rem .7rem; }
+    #content a { color: #2563eb; }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/">Home</a>
+    <a href="/learn/learn.html">Learn</a>
+  </header>
+  <main id="content"></main>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+  <script>
+    // Add a new track here after creating its folder under /learn.
+    const TRACKS = [
+      { slug: "networking-osi",    title: "Networking & the OSI Model", desc: "Bottom-up troubleshooting, layer by layer." },
+      { slug: "operating-systems", title: "Operating Systems",          desc: "Processes, memory, file systems, and the CLI." },
+      { slug: "cloud-aws",         title: "Cloud (AWS)",                desc: "How lukaslim.com itself is built and delivered." },
+      { slug: "databases",         title: "Databases",                  desc: "SQL vs. NoSQL, indexing, and connection flows." }
+    ];
+
+    const el = document.getElementById("content");
+    const page = new URLSearchParams(location.search).get("p");
+
+    function showHub() {
+      el.innerHTML = "<h1>Tech Education Hub</h1><p>Field guides from a technician's perspective.</p>" +
+        '<div class="cards">' + TRACKS.map(t =>
+          `<a class="card" href="?p=${t.slug}"><h2>${t.title}</h2><p>${t.desc}</p></a>`).join("") + "</div>";
+    }
+
+    async function showPage(p) {
+      // Allow only lowercase letters, digits, hyphens and slashes; block path traversal.
+      if (!/^[a-z0-9-]+(\/[a-z0-9-]+)*$/.test(p)) { el.textContent = "Invalid page."; return; }
+      const res = await fetch(`${p}/index.md`);
+      if (!res.ok) { el.innerHTML = "<h1>Not found</h1><p><a href='/learn/learn.html'>Back to Learn</a></p>"; return; }
+      const md = await res.text();
+      el.innerHTML = DOMPurify.sanitize(marked.parse(md)) + "<p><a href='/learn/learn.html'>&larr; All tracks</a></p>";
+      const h1 = el.querySelector("h1");
+      if (h1) document.title = h1.textContent + " | Lukas Lim";
+    }
+
+    page ? showPage(page) : showHub();
+  </script>
+</body>
+</html>
